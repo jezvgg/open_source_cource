@@ -1,2 +1,2 @@
-from open_source_cource.testing_mocks.core.enums.convert_string_type import ConvertStringType
+from core.enums.convert_string_type import ConvertStringType
 from core.enums.convert_type import ConvertType

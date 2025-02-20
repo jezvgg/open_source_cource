@@ -25,7 +25,7 @@ converter = Converter()
 async def add_item(username: str, file: UploadFile):
     if username not in users_list:
         raise HTTPException(status_code=404, detail='User not found!')
-    items[username] = deconverter.deconvert(ConvertType.CSV, file)
+    items[username] = deconverter.deconvert(ConvertType.CSV, file.file.read())
     return 'ok'
 
 

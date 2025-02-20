@@ -12,18 +12,18 @@ class Deconverter:
 
 
     def __init__(self):
-        types = {ConvertType.CSV:"parse_csv"}
+        self.types = {ConvertType.CSV:self.parse_csv}
 
         
 
     def deconvert(self, argument: ConvertType, obj: io.BytesIO) -> dict:
-        obj = obj.read()
+        value = obj.decode('utf-8')
+        
+
         if not argument in self.types.keys():
             raise ValueError("argument not in ConverStringType")
-        
-        convert_function = getattr(Deconverter, self.types[argument])
 
-        return convert_function(obj)
+        return self.types[argument](value)
 
 
 
@@ -47,10 +47,10 @@ class Deconverter:
 
         return data
     
-    def get_type(value: str):
-        if value.isdidget():
+    def get_type(self,value: str):
+        if value.isdigit():
             return ConvertStringType.INT
-        if value.replace('.','').isdidget():
+        if value.replace('.','').isdigit():
             return ConvertStringType.FLOAT
         return ConvertStringType.STR
 

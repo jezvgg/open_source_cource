@@ -1,5 +1,5 @@
 import io
-import pickle
+import json
 from core.enums import ConvertType
 
 
@@ -11,24 +11,21 @@ class Converter:
 
 
     def __init__(self):
-        types = {ConvertType.JSON:"dict_to_bytesio"}
+        self.types = {ConvertType.JSON:self.dict_to_bytesio}
 
-    def deconvert(self, argument: ConvertType, obj: io.BytesIO) -> dict:
-        obj = obj.read()
+    def convert(self, argument: ConvertType, obj: object ) -> bytearray:
         if not argument in self.types.keys():
             raise ValueError("argument not in ConverStringType")
-        
-        convert_function = getattr(Converter, self.types[argument])
 
-        return convert_function(obj)
+        return self.types[argument](obj)
 
 
     
 
-    def dict_to_bytesio(data_dict):
-      
-        byte_stream = io.BytesIO()
-        pickle.dump(data_dict, byte_stream)
+    def dict_to_bytesio(self, data_dict: dict):
+        
+        json_string = json.dumps(data_dict)
+        byte_data = json_string.encode('utf-8')
+        byte_array_data = bytearray(byte_data)
 
-        byte_stream.seek(0)
-        return byte_stream
+        return byte_array_data
