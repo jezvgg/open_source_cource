@@ -32,7 +32,7 @@ class TestUserService(unittest.TestCase):
 
 
     # TODO Должен заработать после реализаций конвертации
-    @unittest.expectedFailure
+    #@unittest.expectedFailure
     def test_get_item(self):
         with self.assertRaises(HTTPException):
             response1 = self.client.get('/items/get/jezv')
@@ -43,8 +43,9 @@ class TestUserService(unittest.TestCase):
 
         response2 = self.client.get('/items/get/jezv')
         
-        users_list.remove('jezv')
         del items_list[users_list[0]]
+        users_list.remove('jezv')
+        
 
         assert response2.status_code == 200
-        assert json.loads(response2.json()) == {'a':2}
+        assert response2.json() == {'a':2}
