@@ -18,13 +18,13 @@ class TestUserService(unittest.TestCase):
     def test_add_item(self):
         with self.assertRaises(HTTPException):
             response1 = self.client.post('/items/add/jezv', 
-                                     files={"file": io.BytesIO(b'"Header1","Header2"\n"value1",2')})
+                                     files={"file": bytes(b'"Header1","Header2"\n"value1",2')})
             response1.status_code == 404
 
         users_list.append('jezv')
 
         response2 = self.client.post('/items/add/jezv', 
-                                   files={"file": io.BytesIO(b'"Header1","Header2"\n"value1",2')})
+                                   files={"file": bytes(b'"Header1","Header2"\n"value1",2')})
         
         users_list.remove('jezv')
 
