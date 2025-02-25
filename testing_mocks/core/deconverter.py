@@ -1,4 +1,3 @@
-import io
 import csv
 
 from core.enums import ConvertType, ConvertStringType
@@ -16,7 +15,7 @@ class Deconverter:
 
         
 
-    def deconvert(self, argument: ConvertType, obj: io.BytesIO) -> dict:
+    def deconvert(self, argument: ConvertType, obj: bytes) -> dict:
         value = obj.decode('utf-8')
         
 
@@ -30,7 +29,7 @@ class Deconverter:
 
 
     def parse_csv(self, csv_string: str):
-        data = []
+        data = {"rows": []}
         lines = csv_string.strip().split("\n")
         if not lines:
             return data
@@ -43,8 +42,8 @@ class Deconverter:
             for col_name, value in zip(header, row):
                 convert = ConverterString()
                 row_dict[col_name] = convert(self.get_type(value.strip()),value.strip())
-            data.append(row_dict)
-
+            data["rows"].append(row_dict)
+        print(data)
         return data
     
     def get_type(self,value: str):

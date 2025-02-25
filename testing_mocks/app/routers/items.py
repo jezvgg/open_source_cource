@@ -1,5 +1,4 @@
 import json
-import io
 
 from fastapi import APIRouter, HTTPException, UploadFile
 
@@ -16,7 +15,7 @@ router = APIRouter(
 )
 
 
-items: dict[str, io.BytesIO] = {}
+items: dict[str, bytes] = {}
 deconverter = Deconverter()
 converter = Converter()
 
@@ -33,4 +32,8 @@ async def add_item(username: str, file: UploadFile):
 async def get_item(username: str):
     if username not in users_list:
         raise HTTPException(status_code=404, detail='User not found!')
-    return json.loads(converter.convert(ConvertType.JSON, items[username]))
+
+    item = converter.convert(ConvertType.JSON, items[username]).decode('utf-8')
+
+    print(type(item))
+    return json.loads(item)

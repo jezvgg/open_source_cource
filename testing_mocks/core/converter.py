@@ -13,7 +13,8 @@ class Converter:
     def __init__(self):
         self.types = {ConvertType.JSON:self.dict_to_bytesio}
 
-    def convert(self, argument: ConvertType, obj: object ) -> bytearray:
+    
+    def convert(self, argument: ConvertType, obj: dict ) -> bytes:
         if not argument in self.types.keys():
             raise ValueError("argument not in ConverStringType")
 
@@ -22,10 +23,10 @@ class Converter:
 
     
 
-    def dict_to_bytesio(self, data_dict: dict):
+    def dict_to_bytesio(self, data_dict: dict) -> bytes:
         
         json_string = json.dumps(data_dict)
         byte_data = json_string.encode('utf-8')
-        byte_array_data = bytearray(byte_data)
+        byte_array_data = bytes(byte_data)
 
         return byte_array_data
