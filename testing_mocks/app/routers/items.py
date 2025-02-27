@@ -4,7 +4,6 @@ from fastapi import APIRouter, HTTPException, UploadFile
 
 from app.routers import users_list
 from core.enums import ConvertType
-from core.deconverter import Deconverter
 from core.converter import Converter
 
 
@@ -16,24 +15,33 @@ router = APIRouter(
 
 
 items: dict[str, bytes] = {}
-deconverter = Deconverter()
-converter = Converter()
 
 
 @router.post('/add/{username}', status_code=200)
 async def add_item(username: str, file: UploadFile):
+    '''
+    Сервис добавления CSV файла к пользователю.
+    
+    :param username: Никнейм пользователя
+    :param file: Файл, который нужно прикерпить
+    '''
     if username not in users_list:
         raise HTTPException(status_code=404, detail='User not found!')
-    items[username] = deconverter.deconvert(ConvertType.CSV, file.file.read())
+    
+    items[username] = Converter.deconvert(ConvertType.CSV, file.file.read())
     return 'ok'
 
 
 @router.get('/get/{username}')
 async def get_item(username: str):
+    '''
+    Сервис реализующй логику получения файла пользователя.
+
+    :param username: Никнейм пользователя
+    '''
     if username not in users_list:
         raise HTTPException(status_code=404, detail='User not found!')
 
-    item = converter.convert(ConvertType.JSON, items[username]).decode('utf-8')
+    item = Converter.convert(ConvertType.JSON, items[username]).decode('utf-8')
 
-    print(type(item))
     return json.loads(item)

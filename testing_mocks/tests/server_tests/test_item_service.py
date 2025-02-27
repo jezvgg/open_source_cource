@@ -18,25 +18,24 @@ class TestUserService(unittest.TestCase):
     def test_add_item(self):
         with self.assertRaises(HTTPException):
             response1 = self.client.post('/items/add/jezv', 
-                                     files={"file": bytes(b'"Header1","Header2"\n"value1",2')})
-            response1.status_code == 404
+                                     files={"file": b'"Header1","Header2"\n"value1",2'})
+            assert response1.status_code == 404
 
         users_list.append('jezv')
 
         response2 = self.client.post('/items/add/jezv', 
-                                   files={"file": bytes(b'"Header1","Header2"\n"value1",2')})
+                                   files={"file": b'"Header1","Header2"\n"value1",2'})
         
         users_list.remove('jezv')
 
         assert response2.status_code == 200
 
 
-    # TODO Должен заработать после реализаций конвертации
-    #@unittest.expectedFailure
     def test_get_item(self):
         with self.assertRaises(HTTPException):
             response1 = self.client.get('/items/get/jezv')
-            response1.status_code == 404
+
+            assert response1.status_code == 404
             
         users_list.append('jezv')
         items_list[users_list[0]] = {'a':2}

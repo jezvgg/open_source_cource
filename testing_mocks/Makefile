@@ -3,4 +3,4 @@ run:
 
 .PHONY: tests
 tests:
-	PYTHONPATH=. pytest 
+	PYTHONPATH=. pytest -svv
