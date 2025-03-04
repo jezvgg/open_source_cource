@@ -1,4 +1,0 @@
-httpx
-fastapi[standart]
-pytest
-questionary
